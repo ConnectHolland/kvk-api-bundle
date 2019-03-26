@@ -1,0 +1,29 @@
+parameters:
+    env(CH_KVK_API_URI): 'https://api.kvk.nl:443/'
+    env(CH_KVK_API_USERNAME): 'testourapis'
+    env(CH_KVK_API_PASSWORD): 'testourapis'
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    ConnectHolland\KvkApiBundle\:
+        resource: './*'
+        exclude: './{Tests}'
+
+    ConnectHolland\KvkApiBundle\API\ClientFactory: ~
+
+    ConnectHolland\KvkApiBundle\API\Client\Client:
+        public: true
+        factory: 'ConnectHolland\KvkApiBundle\API\ClientFactory:createApiClient'
+        arguments:
+            - '@ch_kvk_api.guzzle_client'
+
+    ch_kvk_api.guzzle_client:
+        class: 'GuzzleHttp\Client'
+        arguments:
+            - {'base_uri': '%env(CH_KVK_API_URI)%', 'auth': ['%env(CH_KVK_API_USERNAME)%', '%env(CH_KVK_API_PASSWORD)%'] }
+        tags:
+            - { name: 'csa_guzzle.client', middleware: 'logger' }
