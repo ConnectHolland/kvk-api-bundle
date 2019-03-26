@@ -10,25 +10,23 @@ declare(strict_types=1);
 namespace ConnectHolland\KvkApiBundle\API;
 
 use ConnectHolland\KvkApiBundle\API\Client\Client as BaseClient;
+use ConnectHolland\KvkApiBundle\API\Client\Normalizer\NormalizerFactory;
+use ConnectHolland\KvkApiBundle\Normalizer\ApiResponseNormalizer;
+use Symfony\Component\Serializer\Encoder\JsonDecode;
+use Symfony\Component\Serializer\Encoder\JsonEncode;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Serializer;
 
 class Client extends BaseClient
 {
     public static function create($httpClient = null)
     {
-        if (null === $httpClient) {
-            $httpClient = \Http\Discovery\HttpClientDiscovery::find();
-            $plugins    = [];
-            $uri        = \Http\Discovery\UriFactoryDiscovery::find()->createUri('https://api.kvk.nl');
-            $plugins[]  = new \Http\Client\Common\Plugin\AddHostPlugin($uri);
-            $httpClient = new \Http\Client\Common\PluginClient($httpClient, $plugins);
-        }
-        $messageFactory = \Http\Discovery\MessageFactoryDiscovery::find();
-        $streamFactory  = \Http\Discovery\StreamFactoryDiscovery::find();
-        $serializer     = new \Symfony\Component\Serializer\Serializer(
-            array_merge([new \ConnectHolland\KvkApiBundle\Normalizer\ApiResponseNormalizer()], \ConnectHolland\KvkApiBundle\API\Client\Normalizer\NormalizerFactory::create()),
-            [new \Symfony\Component\Serializer\Encoder\JsonEncoder(new \Symfony\Component\Serializer\Encoder\JsonEncode(), new \Symfony\Component\Serializer\Encoder\JsonDecode())]
+        $client             = parent::create($httpClient);
+        $client->serializer = new Serializer(
+            array_merge([new ApiResponseNormalizer()], NormalizerFactory::create()),
+            [new JsonEncoder(new JsonEncode(), new JsonDecode())]
         );
 
-        return new static($httpClient, $messageFactory, $serializer, $streamFactory);
+        return $client;
     }
 }

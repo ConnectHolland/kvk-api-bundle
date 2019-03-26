@@ -1,0 +1,26 @@
+checks:
+    php: true
+
+coding_style:
+    php: {  }
+
+build:
+    environment:
+        timezone: Europe/Amsterdam
+        postgresql: false
+        rabbitmq: false
+        mysql: false
+        redis: false
+        php:
+            version: 7.3
+            ini:
+                'date.timezone': 'Europe/Amsterdam'
+    project_setup:
+        override: true
+
+filter:
+    excluded_paths:
+        - API/Client/*
+        - DependencyInjection/CHKvkApiExtension.php
+        - Resources/*
+        - Tests/*
