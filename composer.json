@@ -14,7 +14,6 @@
         "friendsofphp/php-cs-fixer": "^2",
         "jane-php/open-api": "^4.0"
     },
-    "license": "proprietary",
     "authors": [
         {
             "name": "Matthijs Hasenpflug",
