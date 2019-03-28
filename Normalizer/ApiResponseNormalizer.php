@@ -28,6 +28,6 @@ class ApiResponseNormalizer implements DenormalizerInterface, DenormalizerAwareI
 
     public function denormalize($data, $class, $format = null, array $context = [])
     {
-        return $data->data;
+        return $this->denormalizer->denormalize($data->data, $class, $format, $context);
     }
 }
