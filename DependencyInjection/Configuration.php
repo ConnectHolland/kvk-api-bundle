@@ -30,7 +30,7 @@ class Configuration implements ConfigurationInterface
                     ->cannotBeEmpty()
                 ->end()
                 ->booleanNode('use_testing_account')
-                    ->defaultTrue()
+                    ->defaultFalse()
                 ->end()
             ->end()
         ;
