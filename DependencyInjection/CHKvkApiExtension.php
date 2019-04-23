@@ -24,8 +24,6 @@ class CHKvkApiExtension extends Extension
 
         $container->setParameter('ch_kvk_api.uri', $config['uri']);
         $container->setParameter('ch_kvk_api.api_key', $config['api_key']);
-        $container->setParameter('ch_kvk_api.test_username', $config['test_username']);
-        $container->setParameter('ch_kvk_api.test_password', $config['test_password']);
         $container->setParameter('ch_kvk_api.use_testing_account', $config['use_testing_account']);
 
         $loader = new YamlFileLoader(

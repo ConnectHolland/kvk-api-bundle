@@ -16,8 +16,6 @@ services:
         arguments:
             - '@ch_kvk_api.guzzle_client'
             - '%ch_kvk_api.api_key%'
-            - '%ch_kvk_api.test_username%'
-            - '%ch_kvk_api.test_password%'
             - '%ch_kvk_api.use_testing_account%'
 
     ch_kvk_api.guzzle_client:

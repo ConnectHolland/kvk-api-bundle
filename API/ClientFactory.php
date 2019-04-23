@@ -16,11 +16,13 @@ use Psr\Http\Message\RequestInterface;
 
 class ClientFactory
 {
-    public static function createApiClient(ClientInterface $client, string $apiToken, string $testUsername, string $testPassword, bool $useTestingAccount): Client
+    private const TEST_ACCOUNT_CREDENTIALS = 'testourapis:testourapis';
+
+    public static function createApiClient(ClientInterface $client, string $apiToken, bool $useTestingAccount): Client
     {
-        $client->getConfig('handler')->unshift(Middleware::mapRequest(function (RequestInterface $request) use ($apiToken, $testUsername, $testPassword, $useTestingAccount) {
+        $client->getConfig('handler')->unshift(Middleware::mapRequest(function (RequestInterface $request) use ($apiToken, $useTestingAccount) {
             if ($useTestingAccount) {
-                return self::addTestingAuthentication($request, $testUsername, $testPassword);
+                return self::addTestingAuthentication($request);
             }
 
             return self::addApiToken($request, $apiToken);
@@ -32,9 +34,9 @@ class ClientFactory
     /**
      * Add testing authentication.
      */
-    private static function addTestingAuthentication(RequestInterface $request, string $testUsername, string $testPassword): RequestInterface
+    private static function addTestingAuthentication(RequestInterface $request): RequestInterface
     {
-        return $request->withHeader('Authorization', sprintf('Basic %s', base64_encode($testUsername.':'.$testPassword)));
+        return $request->withHeader('Authorization', sprintf('Basic %s', base64_encode(self::TEST_ACCOUNT_CREDENTIALS)));
     }
 
     /**
