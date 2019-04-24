@@ -1,7 +1,7 @@
 {
     "name": "connectholland/kvk-api-bundle",
     "type": "symfony-bundle",
-    "description": "A Symfony bundle to access KvK API",
+    "description": "KvK API bundle for Symfony",
     "license": "MIT",
     "require": {
         "csa/guzzle-bundle": "^3.0",
