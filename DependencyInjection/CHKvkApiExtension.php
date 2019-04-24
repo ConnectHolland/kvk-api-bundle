@@ -18,6 +18,14 @@ class CHKvkApiExtension extends Extension
 {
     public function load(array $configs, ContainerBuilder $container): void
     {
+        $configuration = new Configuration();
+
+        $config = $this->processConfiguration($configuration, $configs);
+
+        $container->setParameter('ch_kvk_api.uri', $config['uri']);
+        $container->setParameter('ch_kvk_api.api_key', $config['api_key']);
+        $container->setParameter('ch_kvk_api.use_testing_account', $config['use_testing_account']);
+
         $loader = new YamlFileLoader(
             $container,
             new FileLocator(__DIR__.'/../Resources/config')
