@@ -12,7 +12,7 @@ services:
 
     ConnectHolland\KvkApiBundle\API\Client\Client:
         public: true
-        factory: 'ConnectHolland\KvkApiBundle\API\ClientFactory:createApiClient'
+        factory: ['ConnectHolland\KvkApiBundle\API\ClientFactory', 'createApiClient']
         arguments:
             - '@ch_kvk_api.guzzle_client'
             - '%ch_kvk_api.api_key%'

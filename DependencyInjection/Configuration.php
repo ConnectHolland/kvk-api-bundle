@@ -16,10 +16,10 @@ class Configuration implements ConfigurationInterface
 {
     public function getConfigTreeBuilder(): TreeBuilder
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode    = $treeBuilder->root('ch_kvk_api');
+        $treeBuilder = new TreeBuilder('ch_kvk_api');
 
-        $rootNode
+        $treeBuilder
+            ->getRootNode()
             ->children()
                 ->scalarNode('uri')
                     ->cannotBeEmpty()
