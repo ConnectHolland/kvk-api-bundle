@@ -1,12 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
-/*
- * This file is part of the ConnectHolland KvkApiBundle package.
- * (c) Connect Holland.
- */
-
 namespace ConnectHolland\KvkApiBundle\API\Client\Normalizer;
 
 use Jane\JsonSchemaRuntime\Reference;
@@ -17,29 +10,28 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-
 class CompanySearchCriteriaExtendedV2Normalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
 {
     use DenormalizerAwareTrait;
     use NormalizerAwareTrait;
-
     public function supportsDenormalization($data, $type, $format = null)
     {
         return $type === 'ConnectHolland\\KvkApiBundle\\API\\Client\\Model\\CompanySearchCriteriaExtendedV2';
     }
-
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof \ConnectHolland\KvkApiBundle\API\Client\Model\CompanySearchCriteriaExtendedV2;
+        return is_object($data) && get_class($data) === 'ConnectHolland\\KvkApiBundle\\API\\Client\\Model\\CompanySearchCriteriaExtendedV2';
     }
-
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize($data, $class, $format = null, array $context = array())
     {
         if (!is_object($data)) {
-            throw new InvalidArgumentException();
+            throw new InvalidArgumentException(sprintf('Given $data is not an object (%s given). We need an object in order to continue denormalize method.', gettype($data)));
         }
         if (isset($data->{'$ref'})) {
             return new Reference($data->{'$ref'}, $context['document-origin']);
+        }
+        if (isset($data->{'$recursiveRef'})) {
+            return new Reference($data->{'$recursiveRef'}, $context['document-origin']);
         }
         $object = new \ConnectHolland\KvkApiBundle\API\Client\Model\CompanySearchCriteriaExtendedV2();
         if (property_exists($data, 'kvkNumber')) {
@@ -69,11 +61,9 @@ class CompanySearchCriteriaExtendedV2Normalizer implements DenormalizerInterface
         if (property_exists($data, 'q')) {
             $object->setQ($data->{'q'});
         }
-
         return $object;
     }
-
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize($object, $format = null, array $context = array())
     {
         $data = new \stdClass();
         if (null !== $object->getKvkNumber()) {
@@ -91,9 +81,6 @@ class CompanySearchCriteriaExtendedV2Normalizer implements DenormalizerInterface
         if (null !== $object->getRestrictToMainBranch()) {
             $data->{'restrictToMainBranch'} = $object->getRestrictToMainBranch();
         }
-        if (null !== $object->getIsValid()) {
-            $data->{'isValid'} = $object->getIsValid();
-        }
         if (null !== $object->getSite()) {
             $data->{'site'} = $object->getSite();
         }
@@ -103,7 +90,6 @@ class CompanySearchCriteriaExtendedV2Normalizer implements DenormalizerInterface
         if (null !== $object->getQ()) {
             $data->{'q'} = $object->getQ();
         }
-
         return $data;
     }
 }

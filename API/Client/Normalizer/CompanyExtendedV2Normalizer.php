@@ -1,12 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
-/*
- * This file is part of the ConnectHolland KvkApiBundle package.
- * (c) Connect Holland.
- */
-
 namespace ConnectHolland\KvkApiBundle\API\Client\Normalizer;
 
 use Jane\JsonSchemaRuntime\Reference;
@@ -17,29 +10,28 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-
 class CompanyExtendedV2Normalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
 {
     use DenormalizerAwareTrait;
     use NormalizerAwareTrait;
-
     public function supportsDenormalization($data, $type, $format = null)
     {
         return $type === 'ConnectHolland\\KvkApiBundle\\API\\Client\\Model\\CompanyExtendedV2';
     }
-
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof \ConnectHolland\KvkApiBundle\API\Client\Model\CompanyExtendedV2;
+        return is_object($data) && get_class($data) === 'ConnectHolland\\KvkApiBundle\\API\\Client\\Model\\CompanyExtendedV2';
     }
-
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize($data, $class, $format = null, array $context = array())
     {
         if (!is_object($data)) {
-            throw new InvalidArgumentException();
+            throw new InvalidArgumentException(sprintf('Given $data is not an object (%s given). We need an object in order to continue denormalize method.', gettype($data)));
         }
         if (isset($data->{'$ref'})) {
             return new Reference($data->{'$ref'}, $context['document-origin']);
+        }
+        if (isset($data->{'$recursiveRef'})) {
+            return new Reference($data->{'$recursiveRef'}, $context['document-origin']);
         }
         $object = new \ConnectHolland\KvkApiBundle\API\Client\Model\CompanyExtendedV2();
         if (property_exists($data, 'kvkNumber')) {
@@ -58,7 +50,7 @@ class CompanyExtendedV2Normalizer implements DenormalizerInterface, NormalizerIn
             $object->setLegalForm($data->{'legalForm'});
         }
         if (property_exists($data, 'businessActivities')) {
-            $values = [];
+            $values = array();
             foreach ($data->{'businessActivities'} as $value) {
                 $values[] = $this->denormalizer->denormalize($value, 'ConnectHolland\\KvkApiBundle\\API\\Client\\Model\\CompanyProfileV2BusinessActivity', 'json', $context);
             }
@@ -95,24 +87,22 @@ class CompanyExtendedV2Normalizer implements DenormalizerInterface, NormalizerIn
             $object->setDeregistrationDate($data->{'deregistrationDate'});
         }
         if (property_exists($data, 'addresses')) {
-            $values_1 = [];
+            $values_1 = array();
             foreach ($data->{'addresses'} as $value_1) {
                 $values_1[] = $this->denormalizer->denormalize($value_1, 'ConnectHolland\\KvkApiBundle\\API\\Client\\Model\\CompanyProfileV2Address', 'json', $context);
             }
             $object->setAddresses($values_1);
         }
         if (property_exists($data, 'websites')) {
-            $values_2 = [];
+            $values_2 = array();
             foreach ($data->{'websites'} as $value_2) {
                 $values_2[] = $value_2;
             }
             $object->setWebsites($values_2);
         }
-
         return $object;
     }
-
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize($object, $format = null, array $context = array())
     {
         $data = new \stdClass();
         if (null !== $object->getKvkNumber()) {
@@ -131,7 +121,7 @@ class CompanyExtendedV2Normalizer implements DenormalizerInterface, NormalizerIn
             $data->{'legalForm'} = $object->getLegalForm();
         }
         if (null !== $object->getBusinessActivities()) {
-            $values = [];
+            $values = array();
             foreach ($object->getBusinessActivities() as $value) {
                 $values[] = $this->normalizer->normalize($value, 'json', $context);
             }
@@ -168,20 +158,19 @@ class CompanyExtendedV2Normalizer implements DenormalizerInterface, NormalizerIn
             $data->{'deregistrationDate'} = $object->getDeregistrationDate();
         }
         if (null !== $object->getAddresses()) {
-            $values_1 = [];
+            $values_1 = array();
             foreach ($object->getAddresses() as $value_1) {
                 $values_1[] = $this->normalizer->normalize($value_1, 'json', $context);
             }
             $data->{'addresses'} = $values_1;
         }
         if (null !== $object->getWebsites()) {
-            $values_2 = [];
+            $values_2 = array();
             foreach ($object->getWebsites() as $value_2) {
                 $values_2[] = $value_2;
             }
             $data->{'websites'} = $values_2;
         }
-
         return $data;
     }
 }
