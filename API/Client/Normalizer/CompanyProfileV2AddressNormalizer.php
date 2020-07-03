@@ -1,12 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
-/*
- * This file is part of the ConnectHolland KvkApiBundle package.
- * (c) Connect Holland.
- */
-
 namespace ConnectHolland\KvkApiBundle\API\Client\Normalizer;
 
 use Jane\JsonSchemaRuntime\Reference;
@@ -17,29 +10,28 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-
 class CompanyProfileV2AddressNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
 {
     use DenormalizerAwareTrait;
     use NormalizerAwareTrait;
-
     public function supportsDenormalization($data, $type, $format = null)
     {
         return $type === 'ConnectHolland\\KvkApiBundle\\API\\Client\\Model\\CompanyProfileV2Address';
     }
-
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof \ConnectHolland\KvkApiBundle\API\Client\Model\CompanyProfileV2Address;
+        return is_object($data) && get_class($data) === 'ConnectHolland\\KvkApiBundle\\API\\Client\\Model\\CompanyProfileV2Address';
     }
-
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize($data, $class, $format = null, array $context = array())
     {
         if (!is_object($data)) {
-            throw new InvalidArgumentException();
+            throw new InvalidArgumentException(sprintf('Given $data is not an object (%s given). We need an object in order to continue denormalize method.', gettype($data)));
         }
         if (isset($data->{'$ref'})) {
             return new Reference($data->{'$ref'}, $context['document-origin']);
+        }
+        if (isset($data->{'$recursiveRef'})) {
+            return new Reference($data->{'$recursiveRef'}, $context['document-origin']);
         }
         $object = new \ConnectHolland\KvkApiBundle\API\Client\Model\CompanyProfileV2Address();
         if (property_exists($data, 'type')) {
@@ -81,11 +73,9 @@ class CompanyProfileV2AddressNormalizer implements DenormalizerInterface, Normal
         if (property_exists($data, 'rijksdriehoekZ')) {
             $object->setRijksdriehoekZ($data->{'rijksdriehoekZ'});
         }
-
         return $object;
     }
-
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize($object, $format = null, array $context = array())
     {
         $data = new \stdClass();
         if (null !== $object->getType()) {
@@ -127,7 +117,6 @@ class CompanyProfileV2AddressNormalizer implements DenormalizerInterface, Normal
         if (null !== $object->getRijksdriehoekZ()) {
             $data->{'rijksdriehoekZ'} = $object->getRijksdriehoekZ();
         }
-
         return $data;
     }
 }

@@ -1,32 +1,18 @@
 <?php
 
-declare(strict_types=1);
-
-/*
- * This file is part of the ConnectHolland KvkApiBundle package.
- * (c) Connect Holland.
- */
-
 namespace ConnectHolland\KvkApiBundle\API\Client\Normalizer;
 
+@trigger_error('The "NormalizerFactory" class is deprecated since Jane 5.3, use "JaneObjectNormalizer" instead.', E_USER_DEPRECATED);
+/**
+ * @deprecated The "NormalizerFactory" class is deprecated since Jane 5.3, use "JaneObjectNormalizer" instead.
+ */
 class NormalizerFactory
 {
     public static function create()
     {
-        $normalizers   = [];
+        $normalizers = array();
         $normalizers[] = new \Symfony\Component\Serializer\Normalizer\ArrayDenormalizer();
-        $normalizers[] = new \Jane\JsonSchemaRuntime\Normalizer\ReferenceNormalizer();
-        $normalizers[] = new ResultDataCompanyBasicV2Normalizer();
-        $normalizers[] = new CompanyBasicV2Normalizer();
-        $normalizers[] = new CompanySearchV2TradeNamesNormalizer();
-        $normalizers[] = new CompanySearchV2AddressNormalizer();
-        $normalizers[] = new CompanySearchCriteriaExtendedV2Normalizer();
-        $normalizers[] = new ResultDataCompanyExtendedV2Normalizer();
-        $normalizers[] = new CompanyExtendedV2Normalizer();
-        $normalizers[] = new CompanyProfileV2TradeNamesNormalizer();
-        $normalizers[] = new CompanyProfileV2BusinessActivityNormalizer();
-        $normalizers[] = new CompanyProfileV2AddressNormalizer();
-
+        $normalizers[] = new \ConnectHolland\KvkApiBundle\API\Client\Normalizer\JaneObjectNormalizer();
         return $normalizers;
     }
 }
