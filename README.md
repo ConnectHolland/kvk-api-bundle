@@ -21,3 +21,21 @@ ch_kvk_api:
 
 ## Usage
 See https://developers.kvk.nl/documentation for documentation about the API
+
+## Certificates
+
+Current certificates are in ./Resources/apicerts 
+
+Copy the crt files to /usr/local/share/ca-certificates/
+cp ./Resources/apicerts/*.crt /usr/local/share/ca-certificates/
+
+Check if the following files exist in /usr/local/share/ca-certificates/:
+QuoVadis_PKIoverheid_Private_Services_CA_-_G1.crt
+Staat_der_Nederlanden_Private_Root_CA_-_G1.crt
+Staat_der_Nederlanden_Private_Services_CA_-_G1.crt
+
+Update the trusted certificates:
+update-ca-certificates
+
+Test everything works:
+curl https://ssltest.kvk.nl/
