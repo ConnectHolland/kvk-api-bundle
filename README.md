@@ -27,15 +27,21 @@ See https://developers.kvk.nl/documentation for documentation about the API
 Current certificates are in ./Resources/apicerts 
 
 Copy the crt files to /usr/local/share/ca-certificates/
+```bash
 cp ./Resources/apicerts/*.crt /usr/local/share/ca-certificates/
+```
 
 Check if the following files exist in /usr/local/share/ca-certificates/:
-QuoVadis_PKIoverheid_Private_Services_CA_-_G1.crt
-Staat_der_Nederlanden_Private_Root_CA_-_G1.crt
-Staat_der_Nederlanden_Private_Services_CA_-_G1.crt
+- QuoVadis_PKIoverheid_Private_Services_CA_-_G1.crt
+- Staat_der_Nederlanden_Private_Root_CA_-_G1.crt
+- Staat_der_Nederlanden_Private_Services_CA_-_G1.crt
 
 Update the trusted certificates:
-update-ca-certificates
+```bash
+sudo update-ca-certificates
+```
 
 Test everything works:
+```bash
 curl https://ssltest.kvk.nl/
+```
